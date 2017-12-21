@@ -33,7 +33,7 @@
     },
     mounted: function () {
       console.log(this.token)
-      this.$http.get('http://localhost:8080/caiyun-api/openapi/user', {
+      this.$http.get('http://localhost:8080/saas-api/openapi/user', {
         params: {
           token: this.token,
           appId: this.appId
@@ -41,7 +41,7 @@
       }).then((response) => {
         this.uid = response.body.data.uid
         this.name = response.body.data.name
-        this.$http.get('http://localhost:8080/caiyun-api/cyuser/uid/' + this.uid).then((response) => {
+        this.$http.get('http://localhost:8080/saas-api/cyuser/uid/' + this.uid).then((response) => {
           this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
         }, (response) => {
 
@@ -57,7 +57,7 @@
           this.msg = '请选择入党日期'
           return false
         }
-        this.$http.patch('http://localhost:8080/caiyun-api/cyuser/uid/' + this.uid, {
+        this.$http.patch('http://localhost:8080/saas-api/cyuser/uid/' + this.uid, {
           partyDate: this.partyDate
         }).then((response) => {
           this.showToast = true
