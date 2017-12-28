@@ -22,9 +22,6 @@
     },
     data () {
       return {
-        appId: this.$route.query.appId,
-        token: this.$route.query.token,
-        uid: null,
         msg: '',
         showToast: false,
         name: null,
@@ -32,20 +29,11 @@
       }
     },
     mounted: function () {
-      console.log(this.token)
-      this.$http.get('http://localhost:8080/saas-api/openapi/user', {
-        params: {
-          token: this.token,
-          appId: this.appId
-        }
-      }).then((response) => {
-        this.uid = response.body.data.uid
+      console.log(this.config.API_URL)
+      this.$http.get(this.config.API_URL + '/api/userParty/get')
+      .then((response) => {
+        this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
         this.name = response.body.data.name
-        this.$http.get('http://localhost:8080/saas-api/cyuser/uid/' + this.uid).then((response) => {
-          this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
-        }, (response) => {
-
-        })
       }, (response) => {
       })
     },
@@ -57,7 +45,8 @@
           this.msg = '请选择入党日期'
           return false
         }
-        this.$http.patch('http://localhost:8080/saas-api/cyuser/uid/' + this.uid, {
+        this.$http.put(this.config.API_URL + '/api/userParty/upsert', {
+          id: this.config.user.id,
           partyDate: this.partyDate
         }).then((response) => {
           this.showToast = true
