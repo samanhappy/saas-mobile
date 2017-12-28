@@ -30,7 +30,7 @@
     },
     mounted: function () {
       console.log(this.config.API_URL)
-      this.$http.get(this.config.API_URL + '/api/userParty/get')
+      this.$http.get(this.config.API_URL + '/api/userParty/user')
       .then((response) => {
         this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
         this.name = response.body.data.name
@@ -52,7 +52,6 @@
           this.showToast = true
           this.msg = '保存成功'
         }, (response) => {
-
         })
       }
     }
