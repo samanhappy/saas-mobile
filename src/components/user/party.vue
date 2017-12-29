@@ -5,7 +5,7 @@
       <datetime title="入党日期" v-model="partyDate" placeholder="请选择" :min-year=1921></datetime>
       <x-button type="primary" @click.native="save">保存</x-button>
     </group>
-    <tabbar>
+    <tabbar style="position:fixed">
       <tabbar-item>
         <span slot="label">主页</span>
       </tabbar-item>
@@ -29,8 +29,7 @@
       }
     },
     mounted: function () {
-      console.log(this.config.API_URL)
-      this.$http.get(this.config.API_URL + '/api/userParty/user')
+      this.$http.get(this.config.API_URL + '/app/userParty/userId')
       .then((response) => {
         this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
         this.name = response.body.data.name
@@ -45,7 +44,7 @@
           this.msg = '请选择入党日期'
           return false
         }
-        this.$http.put(this.config.API_URL + '/api/userParty/upsert', {
+        this.$http.put(this.config.API_URL + '/app/userParty/upsert', {
           id: this.config.user.id,
           partyDate: this.partyDate
         }).then((response) => {

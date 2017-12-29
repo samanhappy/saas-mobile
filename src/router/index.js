@@ -3,13 +3,15 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import UserParty from '@/components/user/party'
 import VueResource from 'vue-resource'
-import {ToastPlugin} from 'vux'
+import {ToastPlugin, LoadingPlugin} from 'vux'
 
 Vue.use(ToastPlugin)
+Vue.use(LoadingPlugin)
 Vue.use(VueResource)
 Vue.use(Router)
 
 Vue.http.interceptors.push(function (request, next) {
+  console.log(this.$vux)
   if (this.config.user.token) {
     request.headers.set('userToken', this.config.user.token)
   } else if (this.$route.query.token && this.$route.query.appId && this.$route.query.type) {
@@ -31,9 +33,9 @@ Vue.http.interceptors.push(function (request, next) {
     return false
   }
   console.log(request)
-  this.config.fullLoading = true
+  this.$vux.loading.show()
   next(function (response) {
-    this.config.fullLoading = false
+    this.$vux.loading.hide()
     if (response.headers.get('user')) {
       this.config.user = JSON.parse(response.headers.get('user'))
     }
