@@ -1,8 +1,8 @@
 <template>
   <div>
     <group>
-      <x-input title="姓名" v-model="name" readonly></x-input>
-      <datetime title="入党日期" v-model="partyDate" placeholder="请选择" :min-year=1921></datetime>
+      <x-input title="姓名" v-model="partyDate.name" readonly></x-input>
+      <datetime title="入党日期" v-model="partyDate.partyDate" placeholder="请选择" :min-year=1921></datetime>
       <x-button type="primary" @click.native="save">保存</x-button>
     </group>
     <tabbar style="position:fixed">
@@ -24,34 +24,42 @@
       return {
         msg: '',
         showToast: false,
-        name: null,
-        partyDate: null
+        partyDate: {}
       }
     },
     mounted: function () {
       this.$http.get(this.config.API_URL + '/app/userParty/userId')
       .then((response) => {
-        this.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
-        this.name = response.body.data.name
+        if (response.body.data) {
+          this.partyDate = response.body.data
+          this.partyDate.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
+        } else {
+          this.partyDate.name = this.config.user.name
+        }
       }, (response) => {
       })
     },
     methods: {
       save: function () {
-        console.log(this.partyDate)
-        if (this.partyDate == null) {
+        if (this.partyDate.partyDate == null) {
           this.showToast = true
           this.msg = '请选择入党日期'
           return false
         }
-        this.$http.put(this.config.API_URL + '/app/userParty/upsert', {
-          id: this.config.user.id,
-          partyDate: this.partyDate
-        }).then((response) => {
-          this.showToast = true
-          this.msg = '保存成功'
-        }, (response) => {
-        })
+        if (this.partyDate.id) {
+          this.$http.patch(this.config.API_URL + '/app/userParty/' + this.partyDate.id, {
+            partyDate: this.partyDate.partyDate
+          }).then((response) => {
+            this.showToast = true
+            this.msg = '保存成功'
+          })
+        } else {
+          this.partyDate.id = this.config.user.id
+          this.$http.put(this.config.API_URL + '/app/userParty/', partyDate).then((response) => {
+            this.showToast = true
+            this.msg = '保存成功'
+          })
+        }
       }
     }
   }
