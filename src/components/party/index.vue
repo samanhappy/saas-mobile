@@ -24,7 +24,10 @@
       return {
         msg: '',
         showToast: false,
-        partyDate: {}
+        partyDate: {
+          name: null,
+          partyDate: null
+        }
       }
     },
     mounted: function () {
@@ -55,7 +58,9 @@
           })
         } else {
           this.partyDate.id = this.config.user.id
-          this.$http.put(this.config.API_URL + '/app/userParty/', partyDate).then((response) => {
+          this.partyDate.corpId = this.config.user.corpId
+          this.partyDate.appId = this.config.appId
+          this.$http.put(this.config.API_URL + '/app/userParty/', this.partyDate).then((response) => {
             this.showToast = true
             this.msg = '保存成功'
           })

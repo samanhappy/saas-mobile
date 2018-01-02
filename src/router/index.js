@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import UserParty from '@/components/user/party'
+import PartyIndex from '@/components/party/index.vue'
+import PartyBless from '@/components/party/bless.vue'
 import VueResource from 'vue-resource'
 import {ToastPlugin, LoadingPlugin, base64} from 'vux'
 
@@ -11,7 +12,6 @@ Vue.use(VueResource)
 Vue.use(Router)
 
 Vue.http.interceptors.push(function (request, next) {
-  console.log(this.$vux)
   if (this.config.user.token) {
     request.headers.set('userToken', this.config.user.token)
     request.headers.set('appId', this.config.appId)
@@ -67,13 +67,15 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld1',
       component: HelloWorld
     },
     {
-      path: '/user/party.html',
-      name: 'UserParty',
-      component: UserParty
+      path: '/party/index.html',
+      component: PartyIndex
+    },
+    {
+      path: '/party/bless.html',
+      component: PartyBless
     }
   ]
 })
