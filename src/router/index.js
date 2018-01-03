@@ -9,7 +9,9 @@ import {
   LoadingPlugin,
   base64
 } from 'vux'
+import VueWechatTitle from 'vue-wechat-title'
 
+Vue.use(VueWechatTitle)
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(VueResource)
@@ -71,15 +73,24 @@ export default new Router({
   routes: [
     {
       path: '/party/index.html',
-      component: PartyIndex
+      component: PartyIndex,
+      meta: {
+        title: '我的入党紀念日'
+      }
     },
     {
       path: '/party/send-bless.html',
-      component: PartySendBless
+      component: PartySendBless,
+      meta: {
+        title: '发送入党祝福'
+      }
     },
     {
       path: '/party/show-bless.html',
-      component: PartyShowBless
+      component: PartyShowBless,
+      meta: {
+        title: '我的入党祝福'
+      }
     }
   ]
 })
