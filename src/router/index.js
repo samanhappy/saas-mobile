@@ -1,17 +1,21 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import PartyIndex from '@/components/party/index.vue'
-import PartyBless from '@/components/party/bless.vue'
+import PartyIndex from '@/components/party/Index.vue'
+import PartySendBless from '@/components/party/SendBless.vue'
+import PartyShowBless from '@/components/party/ShowBless.vue'
 import VueResource from 'vue-resource'
-import {ToastPlugin, LoadingPlugin, base64} from 'vux'
+import {
+  ToastPlugin,
+  LoadingPlugin,
+  base64
+} from 'vux'
 
 Vue.use(ToastPlugin)
 Vue.use(LoadingPlugin)
 Vue.use(VueResource)
 Vue.use(Router)
 
-Vue.http.interceptors.push(function (request, next) {
+Vue.http.interceptors.push(function(request, next) {
   if (this.config.user.token) {
     request.headers.set('userToken', this.config.user.token)
     request.headers.set('appId', this.config.appId)
@@ -36,7 +40,7 @@ Vue.http.interceptors.push(function (request, next) {
   }
   console.log(request)
   this.$vux.loading.show()
-  next(function (response) {
+  next(function(response) {
     this.$vux.loading.hide()
     if (response.headers.get('user')) {
       this.config.user = JSON.parse(base64.decode(response.headers.get('user')))
@@ -66,16 +70,16 @@ Vue.http.interceptors.push(function (request, next) {
 export default new Router({
   routes: [
     {
-      path: '/',
-      component: HelloWorld
-    },
-    {
       path: '/party/index.html',
       component: PartyIndex
     },
     {
-      path: '/party/bless.html',
-      component: PartyBless
+      path: '/party/send-bless.html',
+      component: PartySendBless
+    },
+    {
+      path: '/party/show-bless.html',
+      component: PartyShowBless
     }
   ]
 })
