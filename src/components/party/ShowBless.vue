@@ -1,6 +1,8 @@
 <template>
 <div class="birthday_con">
-  <img :src="'../../assets/img/' + this.$route.query.bgPicUrl" width="100%" />
+  <img v-if="this.$route.query.bgPicUrl === 'party1.png'" src="../../assets/img/party1.png" width="100%" />
+  <img v-if="this.$route.query.bgPicUrl === 'party2.png'" src="../../assets/img/party2.png" width="100%" />
+  <img v-if="this.$route.query.bgPicUrl === 'party3.png'" src="../../assets/img/party3.png" width="100%" />
   <div class="birthday_con_txt">
     <p>给：{{this.$route.query.userName}}</p>
     <p>{{this.$route.query.msgContent}}</p>

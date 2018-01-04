@@ -45,19 +45,18 @@ export default {
       }
     }
   },
-  mounted: function () {
+  mounted: function() {
     this.$http.get(this.config.API_URL + '/app/userParty/userId').then((response) => {
       if (response.body.data) {
         this.partyDate = response.body.data
-        this.partyDate.partyDate = dateFormat(new Date(response.body.data.partyDate),
-          'YYYY-MM-DD')
+        this.partyDate.partyDate = dateFormat(new Date(response.body.data.partyDate), 'YYYY-MM-DD')
       } else {
         this.partyDate.name = this.config.user.name
       }
     }, (response) => {})
   },
   methods: {
-    save: function () {
+    save: function() {
       if (this.partyDate.partyDate == null) {
         this.showToast = true
         this.msg = '请选择入党日期'
@@ -65,7 +64,8 @@ export default {
       }
       if (this.partyDate.id) {
         this.$http.patch(this.config.API_URL + '/app/userParty/' + this.partyDate.id, {
-          partyDate: this.partyDate.partyDate
+          partyDate: this.partyDate.partyDate,
+          appId: this.config.appId
         }).then((response) => {
           this.showToast = true
           this.msg = '保存成功'
