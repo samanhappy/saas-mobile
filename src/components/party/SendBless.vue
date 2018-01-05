@@ -48,7 +48,7 @@ export default {
     }
   },
   methods: {
-    sendBless: function() {
+    sendBless: function () {
       if (!this.bless.id) {
         this.toast.msg = '用户信息不正确'
         this.toast.show = true
@@ -64,9 +64,13 @@ export default {
         this.toast.show = true
         return false
       }
-      this.$http.put(this.config.API_URL + '/app/userParty/sendBless', this.bless).then((response) => {
-        this.toast.msg = '发送成功'
-        this.toast.show = true
+      this.$http.get(this.config.API_URL + '/app/userParty/sendBless', {
+        params: this.bless
+      }).then((response) => {
+        if (response.status === 200 && response.body.status === 0) {
+          this.toast.msg = '发送成功'
+          this.toast.show = true
+        }
       })
     }
   }
@@ -77,7 +81,7 @@ export default {
 .item {
   padding: 5px 5px;
   font-size: 0;
-  width: 30%;
+  width: 28%;
 }
 
 .item-selected {
