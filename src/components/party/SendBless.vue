@@ -1,6 +1,6 @@
 <template>
 <div>
-  <divider>今天是{{this.$route.query.name}}的入党纪念日，给TA发送一份祝福吧</divider>
+  <divider @click.native="showParam">今天是{{this.$route.query.name}}的入党纪念日，给TA发送一份祝福吧</divider>
   <divider>选择背景图片</divider>
   <checker v-model="bless.bgPicUrl" default-item-class="item" selected-item-class="item-selected">
     <checker-item value="party1.png"> <img src="../../assets/img/party1.png" width="100%"> </checker-item>
@@ -48,6 +48,10 @@ export default {
     }
   },
   methods: {
+    showParam: function () {
+      this.toast.msg = this.$route.query.token
+      this.toast.show = true
+    },
     sendBless: function () {
       if (!this.bless.id) {
         this.toast.msg = '用户信息不正确'
